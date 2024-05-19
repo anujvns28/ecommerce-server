@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema({
       },
       image:{
         type: String,
-        required: true
       },
       password:{
         type: String,
@@ -30,9 +29,9 @@ const userSchema = new mongoose.Schema({
         type: String, 
       },
       profileDetail:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Profile",
-        required:true
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "Profile",
       },
       products:[{
         type:mongoose.Schema.Types.ObjectId,

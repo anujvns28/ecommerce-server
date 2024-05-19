@@ -2,6 +2,7 @@ const OTP = require("../model/Otp");
 const User = require("../model/User");
 const otpGenerator = require('otp-generator');
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 const { mailSend } = require("../utility/mailSender");
 const Profile = require("../model/Profile");
 
@@ -17,7 +18,8 @@ exports.sendOtp = async(req,res) => {
         })
     }
 
-    const user = User.findOne({email:email})
+    const user = await User.findOne({email:email})
+    console.log(user)
     if(user){
         return res.status(500).json({
             success:false,
@@ -39,7 +41,7 @@ exports.sendOtp = async(req,res) => {
     const data = await OTP.create(otpBody);
     
     // send email
-    await mailSend(email,"Email Varifaction",otp)
+     await mailSend(email,"Email Varifaction",otp)
 
     return res.status(200).json({
         success:true,
@@ -70,6 +72,7 @@ exports.signUp = async(req,res) => {
         otp,
       } = req.body
 
+      console.log(req.body,"this is body")
       if (
         !firstName ||
         !lastName ||
@@ -106,18 +109,18 @@ exports.signUp = async(req,res) => {
      //recent otp
      const recentOtp = await OTP.findOne({email:email}).sort({createdAt:-1})
      
-     console.log(recentOtp)
+     console.log(recentOtp.otp)
     if (recentOtp.length === 0) {
       // OTP not found for the email
       return res.status(400).json({
         success: false,
         message: "The OTP is not valid",
       })
-    } else if (otp !== recentOtp.otp) {
+    } else if (Number(otp) !== recentOtp.otp) {
       // Invalid OTP
       return res.status(400).json({
         success: false,
-        message: "The OTP is not valid",
+        message: "The OTP is not valid2",
       })
     }
 
@@ -137,7 +140,7 @@ exports.signUp = async(req,res) => {
     email,
     password: hashedPassword,
     accountType: accountType,
-    additionalDetails: profileDetails._id,
+    profileDetail: profileDetails._id,
     image: "",
   })
 

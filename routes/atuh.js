@@ -19,6 +19,6 @@ router.post("/login", login)
 router.post("/signup", signUp)
 
 // Route for sending OTP to the user's email
-router.post("/sendotp", sendOtp)
+router.post("/sendOtp", sendOtp)
 
 module.exports = router
