@@ -21,8 +21,8 @@ const userSchema = new mongoose.Schema({
         required: true
       },
       accountType:{
-        type: String,
-      enum: ['Admin', 'User',"Seller"], 
+      type: String,
+      enum: ['Admin', 'Buyer',"Seller"], 
       required: true
       },
       token:{

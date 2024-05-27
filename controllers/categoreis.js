@@ -95,13 +95,11 @@ exports.deleteCategorie = async(req,res) => {
 
 exports.fetchCategories = async(req,res) =>{
     try{
-        
-
-       const subCategoreis = Categories.find().populate("SubCategories").exec();
+       const subCategoreis = await Categories.find().populate("subCategories").exec();
 
        return res.status(200).json({
         success:true,
-        message:"subCategoreis fetched successfully",
+        message:"Categoreis fetched successfully",
         data : subCategoreis
     })
 
@@ -110,6 +108,41 @@ exports.fetchCategories = async(req,res) =>{
         return res.status(500).json({
             success:false,
             message:"Error occured in fetching all categories"
+        })  
+    }
+}
+
+exports.categoryDetail = async(req,res) => {
+    try{
+        const {categoryId} = req.body;
+
+        if(!categoryId){
+            return res.status(500).json({
+                success:false,
+                message:"Category id is requireved"
+            })
+        }
+
+        const categoryInfo = await Categories.findById(categoryId).populate("subCategories").exec();
+
+        if(!categoryInfo){
+            return res.status(500).json({
+                success:false,
+                message:"This is not valled categoryid"
+            })
+        }
+
+        return res.status(200).json({
+            success:true,
+            Message:'Category info fetched successfully',
+            data:categoryInfo
+        })
+
+    }catch(error){
+        console.log(error)
+        return res.status(500).json({
+            success:false,
+            message:"Error occured in fetching all category infomation"
         })  
     }
 }
