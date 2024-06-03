@@ -7,5 +7,5 @@ exports.dbConnection = () =>{
         useUnifiedTopology: true 
        })
      .then(() => console.log('MongoDB connected...'))
-     .catch(err => console.log(err));
+     .catch(err => console.log(err,"error occured in db connection"));
 }

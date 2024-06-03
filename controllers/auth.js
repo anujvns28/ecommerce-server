@@ -1,5 +1,6 @@
 const OTP = require("../model/Otp");
 const User = require("../model/User");
+const Address = require("../model/address")
 const otpGenerator = require('otp-generator');
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
@@ -173,6 +174,10 @@ exports.login = async (req, res) => {
   
       // Find user with provided email
       const user = await User.findOne({ email })
+      .populate("additionalInfo")
+      .populate("address")
+      .exec();
+
   
       // If user not found with provided email
       if (!user) {

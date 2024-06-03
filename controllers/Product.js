@@ -50,3 +50,40 @@ exports.createProduct = async (req, res) => {
         })
     }
 }
+
+
+exports.getSingleProduct = async(req,res) => {
+    try{
+        const productId = req.body.productId;
+
+        if(!productId){
+            return res.status(500).json({
+                success: false,
+                message: "Product id is required"
+            })
+        }
+
+        const product = await Product.findById(productId);
+
+        if(!product){
+            return res.status(500).json({
+                success: false,
+                message: "This is not vallid product id"
+            })
+        }
+
+        return res.status(200).json({
+            success:true,
+            message:"product info fetched successfully",
+            data:product
+        })
+
+
+
+    }catch(error){
+        return res.status(500).json({
+            success: false,
+            message: "Error occured in fetching single product information"
+        })  
+    }
+}
