@@ -1,52 +1,65 @@
 const mongoose = require("mongoose");
 
+
 const productSchema = new mongoose.Schema({
-    naem:{
-      type: String,
-      required: true
-    },
-    desc:{
-        type: String,
-        required: true   
-    },
-    price:{
-        type:Number,
-        required:true
-    },
-    color:{
-        type: String,
-        required: true
-    },
-    gender:{
-        type: String,
-        required: true
-    },
-    size:[{
-      type: String,
-      required: true
-    }],
-    discountPrice:{
-        type:Number,
-        required:true  
-    },
-    productImages:[{
+  productName: {
     type: String,
-      required: true 
-    }],
-    productMainImage:{
-        type: String,
-        required: true
-    },
-    ratingAndReviews:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"RatingAndReview"
-    }]
-    
-  });
-  
-  const Product = mongoose.model('Product', productSchema);
+    required: true
+  },
+  productDes: {
+    type: String,
+    required: true
+  },
+  price: {
+    type: Number,
+    required: true
+  },
+  productsImages: [{
+    type: String,
+    required: true
+  }],
+  mainImage: {
+    type: String,
+    required: true
+  },
+  forWhom: {
+    type: String,
+    required: true
+  },
+  color: {
+    type: String,
+    required: true
+  },
+  size: [{
+    type: String,
+    required: true
+  }],
+  subCategory: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "SubCategory",
+  },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Cateogry"
+  },
+  customor: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  }],
+  discountPrice: {
+    type: Number,
+    required: true
+  },
+  ratingAndReviews: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "RatingAndReview"
+  }],
+})
+
+
+
+const Product = mongoose.model('Product', productSchema);
 
 module.exports = Product;
-  
-  
-  
+
+
