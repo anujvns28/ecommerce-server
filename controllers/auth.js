@@ -142,7 +142,7 @@ exports.signUp = async(req,res) => {
     password: hashedPassword,
     accountType: accountType,
     profileDetail: profileDetails._id,
-    image: "",
+    image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
   })
 
   return res.status(200).json({

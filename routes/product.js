@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const {getSingleProduct, createProduct, userProduct, changeDiscount, updateProduct, deleteProduct} = require("../controllers/Product")
+const {getSingleProduct, createProduct, userProduct, changeDiscount, updateProduct, deleteProduct} = require("../controllers/Product");
+const { createRating, getRatingAndReview } = require('../controllers/ratingAndReview');
 
 // ********************************************************************************************************
 //                                      product routes
@@ -19,5 +20,12 @@ router.post("/changeDiscount",changeDiscount)
 router.post("/editProduct",updateProduct)
 // delte product
 router.post("/deleteProduct",deleteProduct)
+
+// ********************************************************************************************************
+//                                      Rating and Review
+// ********************************************************************************************************
+router.post("/createRating",  createRating)
+router.post("/getRatingAndReview", getRatingAndReview)
+
 
 module.exports = router
