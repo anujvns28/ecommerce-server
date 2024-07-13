@@ -150,7 +150,7 @@ const addProduct = async(shouses, userId,addresId,res) => {
             }
            },{new:true});
 
-        //    const address = await Address.findById(addresId);
+           const address = await Address.findById(addresId);
         
         //    console.log(addresId,address,"this is printig address")
 
@@ -159,7 +159,7 @@ const addProduct = async(shouses, userId,addresId,res) => {
             await mailSend(
                addUser.email,
                `Successfully bought ${shouseData.productName}`,
-                productBuyEmail(addUser.firstName, `http://localhost:3000/${shousesId}`)
+                productBuyEmail(addUser.firstName,address, `http://localhost:3000/${shousesId}`)
            )    
            
            }

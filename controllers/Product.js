@@ -382,3 +382,41 @@ exports.deleteProduct = async(req,res) => {
          }) 
      } 
 }
+
+exports.searchProduct = async(req,res) => {
+    try{
+        const proName = req.body.userInput;
+ 
+         
+        if(!proName){
+            return res.status(400).json({
+                success :false,
+                message:"input is required"
+            })
+        }
+
+        const products = await Product.find(
+            {
+                "$or": [
+                    { "productName": { $regex: proName, $options: 'i' } },
+                    { "productDes": { $regex: proName, $options: 'i' } },
+                ]
+            }
+        )
+
+        
+
+        return res.status(200).json({
+            success:true,
+            shouses:products
+        })
+
+    }catch(error){
+        console.log(error)
+        return res.status(500).json({
+            success:false,
+            message:"error occured in searching api"
+        })
+    }
+}
+

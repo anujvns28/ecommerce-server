@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {getSingleProduct, createProduct, userProduct, changeDiscount, updateProduct, deleteProduct} = require("../controllers/Product");
+const {getSingleProduct, createProduct, userProduct, changeDiscount, updateProduct, deleteProduct, searchProduct} = require("../controllers/Product");
 const { createRating, getRatingAndReview } = require('../controllers/ratingAndReview');
 
 // ********************************************************************************************************
@@ -20,6 +20,8 @@ router.post("/changeDiscount",changeDiscount)
 router.post("/editProduct",updateProduct)
 // delte product
 router.post("/deleteProduct",deleteProduct)
+// serach product
+router.post("/serchpProduct",searchProduct)
 
 // ********************************************************************************************************
 //                                      Rating and Review
