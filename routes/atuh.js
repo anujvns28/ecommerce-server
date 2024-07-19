@@ -4,8 +4,11 @@ const router = express.Router();
 const {
     login,
     signUp,
-    sendOtp 
+    sendOtp ,
+    sendResetPasswordMail,
+    updatePassword
 } = require('../controllers/auth');
+
 const { updateProfile, updateProfileImg, addAddress, deleteAddress, updateAddress, chengePassword } = require('../controllers/profile');
 
 
@@ -21,6 +24,12 @@ router.post("/signup", signUp)
 
 // Route for sending OTP to the user's email
 router.post("/sendOtp", sendOtp)
+
+//routes for resting password
+router.post("/resetPasswordMial",sendResetPasswordMail)
+
+//routes for resting password
+router.post("/resetPassword",updatePassword)
 
 //********************************************************************************************************
 //                                     {Profile} routes
@@ -38,5 +47,6 @@ router.post("/deleteAddres",deleteAddress);
 router.post("/editAddress",updateAddress)
 //routes for updating password
 router.post("/updatePassword", chengePassword)
+
 
 module.exports = router

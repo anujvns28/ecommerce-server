@@ -6,6 +6,8 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const { mailSend } = require("../utility/mailSender");
 const Profile = require("../model/Profile");
+const crypto = require("crypto")
+
 
 exports.sendOtp = async(req,res) => {
     try{
@@ -188,7 +190,7 @@ exports.login = async (req, res) => {
       }
   
       //  Compare Password
-      if(!await bcrypt.compare(password, user.password)) {
+      if(await bcrypt.compare(password, user.password)) {
         const token = jwt.sign(
           { email: user.email, id: user._id, role: user.role },
           process.env.JWT_SECRET,
@@ -217,3 +219,89 @@ exports.login = async (req, res) => {
       })
     }
   }
+
+
+exports.sendResetPasswordMail = async(req,res) => {
+  try{
+   const email = req.body.email;
+   
+   if(!email){
+    return res.status(400).json({
+      success:false,
+      message:"email is required"
+    })
+   }
+
+   const resetId = crypto.randomUUID();
+   
+  const resetUrl = `https://shousedekho.vercel.app/update-password/${resetId}`
+  // send mail
+  await mailSend(email,"Reset Password Email",resetUrl);
+
+  // update user token
+  await User.findOneAndUpdate({email:email},{
+    token:resetId
+  },{new:true})
+   
+   return res.status(200).json({
+    success:true,
+    messeage:"reset mail send"
+   })
+
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({
+      success:false,
+      message:"error occured in sending reset mail"
+    })
+  }
+}  
+
+exports.updatePassword = async(req,res) => {
+  try{
+  const {password,confirmPassword,token} = req.body;
+
+  if(!password || !confirmPassword || !token){
+    return res.status(400).json({
+      success:false,
+      message:"all fild are required"
+    })
+  }
+
+  if(password !== confirmPassword){
+    return res.status(400).json({
+      success:false,
+      message:"Passord not match"
+    })
+  }
+
+  const user = await User.findOne({token:token});
+
+  if(!user){
+    return res.status(400).json({
+      success:false,
+      message:"token is not vallied"
+    })
+  }
+
+  // has passwod
+  const hashedPassword = await bcrypt.hash(password, 10)
+
+  await User.findByIdAndUpdate(user._id,{
+    password:hashedPassword
+  },{new:true})
+
+
+  return res.status(200).json({
+    success:"true",
+    message:"Password updated successfully"
+  })
+
+  }catch(error){
+    console.log(error);
+    return res.status(500).json({
+      success:false,
+      message:'error occured in updating password'
+    })
+  }
+}
