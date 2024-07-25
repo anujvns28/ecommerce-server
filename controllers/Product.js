@@ -279,7 +279,7 @@ exports.updateProduct = async (req, res) => {
         }
 
         let prevImages
-        if(editedImage.length>1){
+        if(editedImage.length>0){
             prevImages = productData.productsImages;
             let count = 0;
             const subImagesUrl = await Promise.all(subImages.map(async (image) => {
@@ -288,7 +288,7 @@ exports.updateProduct = async (req, res) => {
             }));
 
              // update subimages image
-            editedImage.map((item) => {
+              editedImage.map((item) => {
                 prevImages.map((image,index) => {
                     if(Number(item) == Number(index)){
                         console.log("comming")
