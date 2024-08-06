@@ -95,7 +95,8 @@ exports.deleteCategorie = async(req,res) => {
 
 exports.fetchCategories = async(req,res) =>{
     try{
-       const subCategoreis = await Categories.find().populate("subCategories").exec();
+        const subCategoreis = await Categories.find().select("-categoryDes")
+        .populate("subCategories","name image").exec();
 
        return res.status(200).json({
         success:true,
