@@ -5,12 +5,15 @@ const cors = require("cors");
 const fileUpload = require('express-fileupload')
 require("dotenv").config()
 
+
+
 const authRoutes = require("./routes/atuh")
 const categoriesRoutes = require("./routes/categories");
 const subCategoriesRoutes = require("./routes/subCategories");
 const productRoutes = require("./routes/product");
 const paymentRoutes = require("./routes/payment");
 const { cloudinaryConnect } = require('./config/cloudenary');
+const { default: axios } = require('axios');
 
 
 
@@ -47,7 +50,31 @@ app.use("/api/v1/subCategory",subCategoriesRoutes)
 app.use("/api/v1/product",productRoutes)
 app.use("/api/v1/payment",paymentRoutes)
 
+// Add keep-alive endpoint
+app.get('/keep-alive', (req, res) => {
+	res.status(200).send('Server is alive');
+  });
+
+
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
 
+
+// Keep-alive function
+const keepWarm = () => {
+	const interval = process.env.WARM_UP_INTERVAL || 60 * 1000; // default to 1 minute
+	const keepAliveUrl = `http://localhost:${port}/keep-alive`;
+  
+	setInterval(async () => {
+	  try {
+		console.log('Sending keep-alive request');
+		const response = await axios.get(keepAliveUrl);
+		console.log(`Keep-alive request status: ${response.status}`);
+	  } catch (error) {
+		console.error('Error sending keep-alive request:', error);
+	  }
+	}, interval);
+  };
+  
+  keepWarm();
