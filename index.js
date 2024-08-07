@@ -63,8 +63,8 @@ app.listen(port, () => {
 
 // Keep-alive function
 const keepWarm = () => {
-	const interval = process.env.WARM_UP_INTERVAL || 60 * 1000; // default to 1 minute
-	const keepAliveUrl = `http://localhost:${port}/keep-alive`;
+	const interval = process.env.WARM_UP_INTERVAL || 5 * 60 * 1000; // default to 1 minute
+	const keepAliveUrl = `https://shousedekho-server.onrender.com/keep-alive`;
   
 	setInterval(async () => {
 	  try {
