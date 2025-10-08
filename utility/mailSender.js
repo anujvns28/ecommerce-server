@@ -1,31 +1,33 @@
-const nodemailer = require("nodemailer");
+const axios = require("axios");
 
-const transporter = nodemailer.createTransport({
-    host: process.env.MAIL_HOST,
-    auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS,
-    },
-    secure: false,
-});
+const mailSender = async (to, subject, html) => {
+  try {
+    const res = await axios.post(
+      "https://api.brevo.com/v3/smtp/email",
+      {
+        sender: {
+          name: "Studynotion",
+          email: "dummyanuj80@gmail.com", // ✅ Verified sender email
+        },
+        to: [{ email: to }], // Recipient email (dummyanuj80@gmail.com for test)
+        subject: subject,
+        htmlContent: html,
+      },
+      {
+        headers: {
+          "api-key": process.env.BREVO_API_KEY, // ✅ Brevo API key
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-
-exports.mailSend = async(email,title,body) =>{
-  try{
-    const info = await transporter.sendMail({
-        from: `This is from codex ${process.env.MAIL_USER}`,
-        to: email,
-        subject: title,
-        html: body
-      });
-    
-      console.log("Message sent: %s", info.messageId);
-  }catch(error){
-    console.log(error,"error occeurd in sendimg mail")
-    return res.status(500).json({
-        success:false,
-        message:"Error occured"
-    })
+    console.log("Mail sent:", res.data);
+    console.log("hello");
+    return res.data;
+  } catch (err) {
+    console.error("Mail send error:", err.response?.data || err.message);
+    return err;
   }
-}
+};
 
+module.exports = mailSender;
