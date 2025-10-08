@@ -43,7 +43,7 @@ exports.sendOtp = async (req, res) => {
     const data = await OTP.create(otpBody);
 
     // send email
-    await mailSend(email, "Email Varifaction", otp);
+    await mailSender(email, "Email Varifaction", otp);
 
     return res.status(200).json({
       success: true,
