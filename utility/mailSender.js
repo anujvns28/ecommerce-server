@@ -7,7 +7,7 @@ const mailSender = async (to, subject, html) => {
       {
         sender: {
           name: "Studynotion",
-          email: "dummyanuj80@gmail.com", // ✅ Verified sender email
+          email: "dummyanuj80@gmail.com",
         },
         to: [{ email: to }], // Recipient email (dummyanuj80@gmail.com for test)
         subject: subject,
