@@ -6,7 +6,7 @@ const mailSender = async (to, subject, html) => {
       "https://api.brevo.com/v3/smtp/email",
       {
         sender: {
-          name: "Studynotion",
+          name: "shouseDekho",
           email: "dummyanuj80@gmail.com",
         },
         to: [{ email: to }], // Recipient email (dummyanuj80@gmail.com for test)
